@@ -28,7 +28,7 @@ public class SecurityConfig{
 	
 	@Bean
 	public BCryptPasswordEncoder encodePwd() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(); 
 	}
 
 	@Bean
