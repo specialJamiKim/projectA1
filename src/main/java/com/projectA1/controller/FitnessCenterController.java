@@ -74,9 +74,9 @@ public class FitnessCenterController {
     }
     
 	//전체보기
-    @GetMapping("/fitnessCenter/*")
+    @GetMapping("gymlist")
     public String getAllFitnessCenters(Model model) {
         model.addAttribute("fitnessCenters", FitnessCenterService.viewAll());
-        return "/fitnesscenter";
+        return "/center/gymlist";
     }
 }

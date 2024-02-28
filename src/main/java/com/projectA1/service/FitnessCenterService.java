@@ -15,28 +15,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FitnessCenterService {
 
-	private final FitnessCenterRepository fitnesscenterrepository;
+	private final FitnessCenterRepository fitnessCenterRepository;
 	
 	// 추가
 	public void join(FitnessCenter fitnesscenter) {
-		fitnesscenterrepository.save(fitnesscenter);
+		fitnessCenterRepository.save(fitnesscenter);
 	}
 	
 	//  상세보기
 	public Optional<FitnessCenter> view(Long id) {
-        return fitnesscenterrepository.findById(id);
+        return fitnessCenterRepository.findById(id);
     }
 	
 	//  전체보기
 	 public List<FitnessCenter> viewAll() {
-	        return fitnesscenterrepository.findAll();
+	        return fitnessCenterRepository.findAll();
 	    }
 	
 	
 	//  수정 => 주소, 전화번호, 일일권 수정가능
 	@Transactional
 	public void update(FitnessCenter fitnesscenter) {
-		FitnessCenter f = fitnesscenterrepository.findById(fitnesscenter.getId()).get();
+		FitnessCenter f = fitnessCenterRepository.findById(fitnesscenter.getId()).get();
 		f.setAddress(fitnesscenter.getAddress());
 		f.setPhoneNumber(fitnesscenter.getPhoneNumber());
 		f.setOpenTime(fitnesscenter.getOpenTime());
@@ -47,7 +47,7 @@ public class FitnessCenterService {
 	// 삭제
 	@Transactional
 	 public void deleteFitnessCenter(Long id) {
-	        fitnesscenterrepository.deleteById(id);
+		fitnessCenterRepository.deleteById(id);
 	    }
 
 

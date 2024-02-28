@@ -46,6 +46,8 @@ public class UserController {
 		userService.join(user);
 		return "success";
 	}
+	
+	
 
 	// 사용자 마이페이지(상세보기)
 	// 이거 기준으로 짜면됩니다.
