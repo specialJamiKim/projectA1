@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>User Information Update</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
+
+		.container {
+			background: #f2f2f2;
+			/* 배경을 연한 회색으로 변경 */
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.btn-custom {
+			background-color: #6c757d;
+			color: white;
+			border-radius: 4px;
+		}
+
+		.btn-custom:hover {
+			background-color: #5a6268;
+		}
+
+		label {
+			font-weight: bold;
+		}
+
+		input[type="text"],
+		input[type="email"],
+		input[type="password"] {
+			border-radius: 4px;
+			border: 1px solid #ced4da;
+		}
+
+		.title {
+			background-color: #6c757d;
+			/* 배경색 추가 */
+			color: white;
+			/* 텍스트 색상을 흰색으로 변경 */
+			padding: 10px 15px;
+			/* 패딩 추가 */
+			border-radius: 5px;
+			/* 모서리 둥글게 */
+			margin-bottom: 20px;
+			/* 하단 여백 추가 */
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // 페이지가 로드될 때 실행되는 함수
+        $("#btnRegister").click(function () {
+            // 등록 버튼 클릭 시 실행되는 함수
+            var data = {
+                name: $("#name").val(),
+                address: $("#address").val(),
+                phoneNumber: $("#phoneNumber").val(),
+                dailyPassPrice: $("#dailyPassPrice").val(),
+                openTime: $("#openTime").val(),
+                closingTime: $("#closingTime").val()
+            };
+
+            // AJAX를 통한 등록 처리
+            $.ajax({
+                type: "POST",
+                url: "/centerManage/register",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert($("#name").val() + '의 수정이 완료되었습니다.');
+                    window.location.href = "/owner/ownerpage";
+                },
+                error: function (xhr, status, error) {
+                    alert($("#name").val() + '의 수정 중 오류가 발생했습니다.');
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        // 오픈 시간과 마감 시간 초기 값 설정
+        $("#openTime").val("${center.openTime != null ? center.openTime : ''}");
+        $("#closingTime").val("${center.closingTime != null ? center.closingTime : ''}");
+    });
+</script>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="container mt-5">
+			<h2 class="text-center mb-4">Fitness Center 등록</h2>
+			<div class="input-box">
+				<form>
+					<div class="form-group">
+						<label for="name">센터이름:</label>
+						<input type="text" class="form-control" id="name" th:value="${center.name}"
+							placeholder="센터이름을 입력하세요" name="name">
+					</div>
+					<div class="form-group">
+						<label for="address">주소:</label>
+						<input type="text" class="form-control" id="address" th:value="${center.address}"
+							placeholder="주소를 입력하세요" name="address">
+					</div>
+					<div class="form-group">
+						<label for="phoneNumber">전화번호:</label>
+						<input type="text" class="form-control" id="phoneNumber" th:value="${center.phoneNumber}"
+							placeholder="전화번호를 입력하세요" name="phoneNumber">
+					</div>
+					<div class="form-group">
+						<label for="dailyPassPrice">일일권 가격:</label>
+						<input type="number" class="form-control" th:value="${center.dailyPassPrice}"
+							id="dailyPassPrice" placeholder="일일권 가격을 입력하세요" name="dailyPassPrice">
+					</div>
+					<div class="form-group">
+						<label for="openTime">오픈시간:</label>
+						<input type="time" class="form-control" id="openTime" name="openTime"
+							>
+					</div>
+					<div class="form-group">
+						<label for="closingTime">마감시간:</label>
+						<input type="time" class="form-control" id="closingTime" name="closingTime"
+							>
+					</div>
+					<button type="button" class="btn btn-primary" id="btnRegister">등록하기</button>
+					<button type="button" class="btn btn-custom">
+						<a th:href="@{/owner/ownerpage}" style="text-decoration: none; color: white;">돌아가기</a>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

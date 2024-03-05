@@ -47,5 +47,8 @@ public class DiaryController {
 		diaryService.addDiary(diary);
 		return "redirect:/diary/diaryList";
 	}
+	
+	//상세보기
+	
 
 }
