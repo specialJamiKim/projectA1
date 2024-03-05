@@ -78,7 +78,7 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     alert($("#name").val() + '의 수정이 완료되었습니다.');
-                    window.location.href = "/owner/ownerpage";
+                    location.href = "redirect:/owner/ownerpage";
                 },
                 error: function (xhr, status, error) {
                     alert($("#name").val() + '의 수정 중 오류가 발생했습니다.');

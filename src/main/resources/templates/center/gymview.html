@@ -1,192 +1,169 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/layout1}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/layout1}">
 <head>
-<title>체육관 예약 시스템</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<style>
-body {
-	font-family: 'Arial', sans-serif;
-	background-color: #f4f4f4;
-	margin: 0;
-	padding: 0;
-}
+    <title>체육관 예약 시스템</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
-.gym-view {
-	width: 100%;
-	max-width: 600px;
-	margin: 20px auto;
-	padding: 20px;
-	background-color: white;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	border-radius: 10px;
-	overflow: hidden;
-}
+        .gym-view {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-.gym-header {
-	background-color: #eaeaea; /* 회색 톤으로 변경 */
-	padding: 20px;
-	text-align: center;
-	border-bottom: 1px solid #ccc; /* 경계선도 회색으로 조정 */
-}
+        .gym-header {
+            background-color: #eaeaea; /* 회색 톤으로 변경 */
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #ccc; /* 경계선도 회색으로 조정 */
+        }
 
-.gym-view h1 {
-	margin: 0;
-	color: #333;
-	font-size: 24px;
-}
+        .gym-view h1 {
+            margin: 0;
+            color: #333;
+            font-size: 24px;
+        }
 
-.gym-body {
-	padding: 20px;
-}
+        .gym-body {
+            padding: 20px;
+        }
 
-.gym-body label {
-	color: #555; /* 글자 색상을 더 어두운 회색으로 변경 */
-	font-size: 16px;
-	font-weight: normal;
-	margin-bottom: 5px;
-	display: block;
-}
+        .gym-body label {
+            color: #555; /* 글자 색상을 더 어두운 회색으로 변경 */
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 5px;
+            display: block;
+        }
 
-.gym-body .info {
-	margin-bottom: 15px;
-}
+        .gym-body .info {
+            margin-bottom: 15px;
+        }
 
-.gym-body .info span {
-	font-size: 18px;
-	color: #333;
-}
+        .gym-body .info span {
+            font-size: 18px;
+            color: #333;
+        }
 
-.gym-footer {
-	padding: 20px;
-	background-color: #eaeaea; /* 회색 톤으로 변경 */
-	text-align: center;
-}
+        .gym-footer {
+            padding: 20px;
+            background-color: #eaeaea; /* 회색 톤으로 변경 */
+            text-align: center;
+        }
 
-.gym-view button {
-	display: inline-block;
-	padding: 10px 20px;
-	background-color: #6c757d; /* 버튼 색상을 더 미묘한 회색으로 변경 */
-	color: white;
-	font-size: 18px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	text-decoration: none;
-	transition: background-color 0.3s;
-}
+        .gym-view button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #6c757d; /* 버튼 색상을 더 미묘한 회색으로 변경 */
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
 
-.gym-view button:hover {
-	background-color: #5a6268; /* 호버 효과 색상도 변경 */
-}
-/* 별점에 별 이모지 추가 */
-.star-rating {
-	color: #d2d2d2; /* 별점 색상 조정 */
-	font-size: 18px;
-}
+        .gym-view button:hover {
+            background-color: #5a6268; /* 호버 효과 색상도 변경 */
+        }
 
-.star-rating .filled {
-	color: #f5d042; /* 별점 채워진 부분 색상 조정 */
-}
+        /* 별점에 별 이모지 추가 */
+        .star-rating {
+            color: #d2d2d2; /* 별점 색상 조정 */
+            font-size: 18px;
+        }
 
-.return-button {
-	text-decoration: none;
-	color: white;
-}
-</style>
+        .star-rating .filled {
+            color: #f5d042; /* 별점 채워진 부분 색상 조정 */
+        }
+
+        .return-button {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+    
+    <script>
+    $(document).ready(function() {
+        $("#back").click(function(){
+            window.location.href = "/centerManage/gymlist";
+        });
+
+        $("#reserveButton").click(function() {
+            if (confirm("예약하시겠습니까?")) {
+                var centerId = $("#fitnessCenterId").val();
+
+                // 예약 생성을 위한 AJAX 요청
+                $.ajax({
+                    type : "POST",
+                    url : "/reservation/create",
+                    data : {
+                        centerId: centerId
+                    },
+                    success : function(resp, status) {
+                        alert("예약에 성공하였습니다.");
+                        window.location.href = "/user/mypage";
+                    },
+                    error : function(e) {
+                        alert("예약 실패 : " + e);
+                    }
+                });
+            } else {
+                alert("예약이 취소되었습니다.");
+            }
+        });
+    });
+</script>
+
 </head>
 <body>
-	<div layout:fragment="content">
-		<div class="gym-view">
-			<div class="gym-header">
-				<h1 th:text="${fitnessCenter.name} + ' 센터 정보'">센터 정보</h1>
-			</div>
-			<div class="gym-body">
-				<div class="info">
-					<label>센터 명 :</label> <span th:text="${fitnessCenter.name}">휘트니스
-						센터</span>
-				</div>
-				<div class="info">
-					<label>전화번호 :</label> <span th:text="${fitnessCenter.phoneNumber}">010-0000-0000</span>
-				</div>
-				<div class="info">
-					<label>일일권 가격 :</label> <span
-						th:text="${fitnessCenter.dailyPassPrice} + '원'">20,000원</span>
-				</div>
-				<div class="info">
-					<label>센터 위치 :</label> <span th:text="${fitnessCenter.address}">서울특별시
-						강남구 역삼동</span>
-				</div>
-				<div class="info">
-					<label>운영시간 :</label>
-					 <span th:text="${fitnessCenter.openTime}"></span>
-					<span th:text="${fitnessCenter.closingTime}"></span>
-				</div>
-				<!-- 별점 표시는 현재 하드코딩된 값으로 되어 있으므로 수정이 필요할 수 있습니다. -->
-				<!-- <div class="info">
-                    <label>별점 :</label>
-                    <span class="rating-stars">⭐ 4.5</span>
-                </div> -->
-			</div>
-			<div class="gym-footer">
-				<!-- '돌아가기' 버튼은 'gymlist.html'로 이동합니다. -->
-				<button>
-					<a th:href="@{/centerManage/gymlist}" class="return-button">돌아가기</a>
-				</button>
-				<!-- '예약하기' 버튼은 경로 '#'로 설정됩니다. -->
-				<button id="reserveButton">예약하기</button>
-			</div>
-		</div>
-	</div>
+    <div layout:fragment="content">
+        <div class="gym-view">
+            <div class="gym-header">
+                <h1 th:text="${fitnessCenter.name} + ' 센터 정보'">센터 정보</h1>
+            </div>
+            <input type="hidden" id="fitnessCenterId" th:value="${fitnessCenter.id}">
+            <div class="gym-body">
+                <div class="info">
+                    <label>센터 명 :</label> <span th:text="${fitnessCenter.name}">휘트니스 센터</span>
+                </div>
+                <div class="info">
+                    <label>전화번호 :</label> <span th:text="${fitnessCenter.phoneNumber}">010-0000-0000</span>
+                </div>
+                <div class="info">
+                    <label>일일권 가격 :</label> <span th:text="${fitnessCenter.dailyPassPrice} + '원'">20,000원</span>
+                </div>
+                <div class="info">
+                    <label>센터 위치 :</label> <span th:text="${fitnessCenter.address}">서울특별시 강남구 역삼동</span>
+                </div>
+                <div class="info">
+                    <label>운영시간 :</label>
+                    <span th:text="${fitnessCenter.openTime}"></span> ~ <span th:text="${fitnessCenter.closingTime}"></span>
+                </div>
+            </div>
+            
+            <div class="gym-footer">
+                <!-- '돌아가기' 버튼은 'gymlist.html'로 이동합니다. -->
+                <button id = "back" name = "back" class="return-button">돌아가기</button>
+                <!-- '예약하기' 버튼에는 클릭 이벤트를 처리하는 JavaScript 코드가 필요합니다. -->
+                <button id="reserveButton" name = "reserveButton" class="reserve-button">예약하기</button>
+            </div>
+        </div>
+    </div>
 
-	<script>
-		$("#reserveButton").click(function() {
-			alert("하이욤")
-
-			// 사용자가 로그인되어 있는지 확인
-			if (!isUserLoggedIn()) {
-				alert("로그인하세요");
-				location.href = "/login";
-				return;
-			}
-
-			// 예약 여부를 확인하는 팝업 창 표시
-			if (confirm("예약하시겠습니까?")) {
-				let data = {
-					"center_id" : "${fitnessCenter.id}", // 센터 ID
-				// 여기에 다른 예약 정보를 추가할 수 있습니다.
-				};
-
-				// 예약 생성을 위한 AJAX 요청
-				$.ajax({
-					type : "POST",
-					url : "/reservation/create", // 예약 생성 URL
-					contentType : "application/json;charset=utf-8",
-					data : JSON.stringify(data),
-					success : function(resp, status) {
-						console.log("status : ", status);
-						alert("예약에 성공하였습니다.");
-						// 예약 성공 시 처리할 작업 추가
-					},
-					error : function(e) {
-						alert("예약 실패 : " + e);
-					}
-				});
-			} else {
-				// 사용자가 예약을 취소한 경우 처리할 작업 추가
-				alert("예약이 취소되었습니다.");
-			}
-		});
-
-		// 사용자가 로그인되어 있는지 확인하는 함수
-		function isUserLoggedIn() {
-			// Thymeleaf의 표현식을 JavaScript 코드로 변환
-			var authenticationName = /*[[${#authentication.name}]]*/null;
-			return authenticationName !== null
-					&& authenticationName !== 'anonymousUser';
-		}
-	</script>
 </body>
 </html>

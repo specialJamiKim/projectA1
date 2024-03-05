@@ -4,8 +4,6 @@ package com.projectA1.model;
 import java.time.LocalTime;
 import java.util.List;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,25 +19,24 @@ import lombok.Setter;
 @Setter
 public class FitnessCenter {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
-    private String address;
-    private String phoneNumber;
-    private Long dailyPassPrice;
+	private String name;
+	private String address;
+	private String phoneNumber;
+	private Long dailyPassPrice;
 
-    @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime openTime;
-    @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime closingTime;
 
-    // 이미지 파일 경로 저장 변수 추가
-    private String imagePath; // 예: "/static/img/filename.jpg"
+	private LocalTime openTime;
 
-    // 수정된 부분: Owner와의 관계 설정 ==> (CascadeType.ALL) ->센터 삭제시, 오너도 삭제
-    @OneToMany(mappedBy = "fitnessCenter", cascade = CascadeType.PERSIST)
-    private List<Owner> owners; // 이 FitnessCenter를 소유한 Owner 목록
+
+	private LocalTime closingTime;
+
+	// 수정된 부분: Owner와의 관계 설정 ==> (CascadeType.ALL) ->센터 삭제시, 오너도 삭제
+	@OneToMany(mappedBy = "fitnessCenter", cascade = CascadeType.PERSIST)
+	private List<Owner> owners; // 이 FitnessCenter를 소유한 Owner 목록
+	
 
 }

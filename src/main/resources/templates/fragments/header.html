@@ -11,30 +11,10 @@
 	rel="stylesheet">
 <!-- 이 템플릿을 위한 사용자 정의 스타일 -->
 <link href="styles.css" rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" th:href="@{/css/linearicons.css}">
-<link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
-<link rel="stylesheet" th:href="@{/css/themify-icons.css}">
-<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
-<link rel="stylesheet" th:href="@{/css/nice-select.css}">
-<link rel="stylesheet" th:href="@{/css/nouislider.min.css}">
-<link rel="stylesheet" th:href="@{/css/bootstrap.css}">
-
-<link rel="stylesheet" th:href="@{/css/main.css}">
-
 <style>
 ul .nav-item {
 	magin-left: 5px;
 	magin-right: 5px;
-}
-
-#userNav li span{
-	font-family: "Roboto", sans-serif;
-	}
-	
-#userNav li a {
-	font-family: "Roboto", sans-serif;
 }
 </style>
 
@@ -42,96 +22,55 @@ ul .nav-item {
 
 <body>
 
-	<header th:fragment="header" >
-		<div class="header_area sticky-header">
-		
-			<div class="main_menu">
-				<nav class="navbar navbar-expand-lg navbar-light main_box">
-					<div class="container">
-						<!-- Brand and toggle get grouped for better mobile display -->
-						<div class="d-flex justify-content-between w-100">
-							<!-- 로고를 클릭하면 홈페이지로 이동 -->
-
-
-							<!-- Collect the nav links, forms, and other content for toggling -->
-							<div class="collapse navbar-collapse offset"
-								id="navbarSupportedContent">
-								<a href="/" class="navbar-brand d-flex align-items-center" style="color: white;"> <strong>Fit-PassPlater</strong>
+	<header th:fragment="header">
+		<div class="navbar navbar-dark bg-dark shadow-sm">
+			<div class="container-fluid">
+				<div class="d-flex justify-content-between w-100">
+					<!-- 로고를 클릭하면 홈페이지로 이동 -->
+					<a href="/" class="navbar-brand d-flex align-items-center"> <strong>Fit-PassPlater</strong>
 					</a>
-								<ul class="nav navbar-nav menu_nav ml-auto">
-									<li class="nav-item submenu dropdown"><a href="#"
-										class="nav-link dropdown-toggle" data-toggle="dropdown"
-										role="button" aria-haspopup="true" aria-expanded="false"
-										style="color: white;">개인 회원</a>
-										<ul class="dropdown-menu">
-											<li class="nav-item"><a class="nav-link"
-												th:href="@{/user/mypage}">마이 페이지</a></li>
-											<li class="nav-item"><a class="nav-link"
-												th:href="@{/diary/diaryList}">운동 다이어리</a></li>
-										</ul></li>
-									<li th:if="${roles.contains('ROLE_OWNER')}" class="nav-item submenu dropdown"><a href="#"
-										class="nav-link dropdown-toggle" data-toggle="dropdown"
-										role="button" aria-haspopup="true" aria-expanded="false"
-										style="color: white;">기업 회원</a>
-										<ul class="dropdown-menu">
-											<li class="nav-item"><a class="nav-link"
-												th:href="@{/owner/ownerpage}">대표님 페이지</a></li>
-											<li class="nav-item"><a class="nav-link"
-												th:href="@{/centerManage/joinForm}">센터 등록하기</a></li>
-											<li class="nav-item"><a class="nav-link"
-												th:href="@{/owner/reserveList}">예약자 리스트</a></li>
-										</ul></li>
-									<li class="nav-item"><a class="nav-link"
-										th:href="@{/contactList}" style="color: white;">고객센터</a></li>
-								</ul>
-								<ul class="navbar-nav mb-2 mb-lg-0 d-flex flex-row" id="userNav">
+					<!-- 메뉴 항목들 -->
+					
+<div>
+<ul class="navbar-nav mb-2 mb-lg-0 d-flex flex-row" id="userNav">
 
-							<!-- 환영 메시지 -->
-							<li class="nav-item ml-4"><a class="nav-link" th:href="@{/}"
-								style="color: white; padding-left: 10px; padding-right: 10px;">게시판</a>
-							</li>
-							<li
-								th:if="${authentication != null and authentication.name != 'anonymousUser'}"
-								class="nav-item ml-5" style="font-family: Roboto, sans-serif;"><span class="nav-link"
-								style="color: white; padding-left: 10px; padding-right: 10px; font-size: 14px ;font-weight: 500;">
-									환영합니다, <span th:text="${authentication.name}"></span>님!
-							</span></li>
+    <!-- 환영 메시지 -->
+    <li th:if="${authentication != null and authentication.name != 'anonymousUser'}" class="nav-item">
+        <span class="nav-link" style="color: white; padding-left: 10px; padding-right: 10px;">
+            환영합니다, <span th:text="${authentication.name}"></span>님!
+        </span>
+    </li>
+    
+    <!-- 로그인 -->
+    <li th:unless="${authentication != null and authentication.name != 'anonymousUser'}" class="nav-item">
+        <a class="nav-link" th:href="@{/login/loginPage}" style="color: white; padding-left: 10px; padding-right: 10px;">로그인</a>
+    </li>
+    
+    <!-- 로그아웃 -->
+    <li th:if="${authentication != null and authentication.name != 'anonymousUser'}" class="nav-item">
+        <a class="nav-link" th:href="@{/logout}" style="color: white; padding-left: 10px; padding-right: 10px;">로그아웃</a>
+    </li>
 
-							<!-- 로그인 -->
-							
-							<li
-								th:unless="${authentication != null and authentication.name != 'anonymousUser'}"
-								class="nav-item ml-4"><a class="nav-link"
-								th:href="@{/login/loginPage}"
-								style="color: white; padding-left: 10px; padding-right: 10px; font-size: 14px ;font-weight: 500;">로그인</a>
-							</li>
+    <!-- ROLE_OWNER -->
+    <li th:if="${roles.contains('ROLE_OWNER')}" class="nav-item">
+        <a class="nav-link" th:href="@{/owner/ownerpage}" style="color: white; padding-left: 10px; padding-right: 10px;">사장님 페이지</a>
+    </li>
+    
+    <!-- 게시판 -->
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/}" style="color: white; padding-left: 10px; padding-right: 10px;">게시판</a>
+    </li>
+</ul>
 
-							<!-- 로그아웃 -->
-							<li
-								th:if="${authentication != null and authentication.name != 'anonymousUser'}"
-								class="nav-item ml-3"><a class="nav-link" th:href="@{/logout}"
-								style="color: white; padding-left: 10px; padding-right: 10px;">로그아웃</a>
-							</li>
+</div>
 
-							<!-- ROLE_OWNER -->
-							<!--<li th:if="${roles.contains('ROLE_OWNER')}" class="nav-item">
-								<a class="nav-link" th:href="@{/owner/ownerpage}"
-								style="color: white; padding-left: 10px; padding-right: 10px;">사장님
-									페이지</a>
-							</li>-->
 
-							<!-- 게시판 -->
-							
-						</ul>
-							</div>
-						</div>
-					</div>
-				</nav>
+
+
+
 			</div>
-			</div>
-	
-	
-	
+		</div>
+	</header>
 
 	<!-- 여기에 콘텐츠가 들어갑니다 -->
 
@@ -139,24 +78,6 @@ ul .nav-item {
 	<!-- Bootstrap JS 및 의존성 -->
 	<script
 		src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
-		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-		crossorigin="anonymous"></script>
-	<script th:src="@{/js/vendor/bootstrap.min.js}"></script>
-	<script th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
-	<script th:src="@{/js/jquery.nice-select.min.js}"></script>
-	<script th:src="@{/js/jquery.sticky.js}"></script>
-	<script th:src="@{/js/nouislider.min.js}"></script>
-	<script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
-	<script th:src="@{/js/owl.carousel.min.js}"></script>
-	<!--gmaps Js-->
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
-	<script th:src="@{/js/gmaps.min.js}"></script>
-	<script th:src="@{/js/main.js}"></script>
-	</header>
 </body>
 
 </html>

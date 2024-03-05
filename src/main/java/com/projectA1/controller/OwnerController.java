@@ -34,19 +34,26 @@ public class OwnerController {
 	// 오너 추가
 	// 오너 마이페이지 => 정보수정, 회원탈퇴
 
+
 	private final OwnerService ownerService;
 	private final FitnessCenterService fitnessCenterService;
-
+	
+	
 	// 오너 마이페이지
 	@GetMapping("ownerpage")
 	public String ownerPage(@AuthenticationPrincipal PrincipalUser principalUser, Model model) {
-		// 사용자 정보를 통해 해당 사용자가 관리하는 센터의 이름을 조회하여 모델에 추가합니다.
-		Owner owner = (Owner) principalUser.getUser();
-		FitnessCenter fitnessCenter = owner.getFitnessCenter();
-		model.addAttribute("center", fitnessCenter);
+	    // 사용자 정보를 통해 해당 사용자가 관리하는 센터의 이름을 조회하여 모델에 추가합니다.
+	    Owner owner = (Owner) principalUser.getUser();
+	    if (owner.getFitnessCenter() != null) {
+	        String centerName = fitnessCenterService.findByCenterName(owner.getFitnessCenter().getId());
+	        model.addAttribute("centerName", centerName);
+	    } else {
+	        model.addAttribute("centerName", "notExist");
+	    }
 
-		return "/owner/ownerpage";
+	    return "/owner/ownerpage";
 	}
+
 
 	// 오너 추가폼 변경완료
 	@GetMapping("join")

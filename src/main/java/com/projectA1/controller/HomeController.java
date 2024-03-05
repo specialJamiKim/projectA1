@@ -1,52 +1,15 @@
 package com.projectA1.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.projectA1.repository.OwnerRepository;
-import com.projectA1.repository.UserRepository;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 
 @Controller
 public class HomeController {
-	
-    @Autowired
-    private UserRepository userRepository; // UserRepository 주입
-
-    @Autowired
-    private OwnerRepository ownerRepository; // OwnerRepository 주입
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder; // BCryptPasswordEncoder 주입
-	
-	//클릭시 암호화
-	@GetMapping("/encrypt")
-	@Transactional
-	public String enenenen() {
-        // 사용자의 비밀번호를 암호화하여 업데이트
-        userRepository.findAll().forEach(user -> {
-            String encryptedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encryptedPassword);
-            userRepository.save(user);
-        });
-
-        // 소유자의 비밀번호를 암호화하여 업데이트
-        ownerRepository.findAll().forEach(owner -> {
-            String encryptedPassword = passwordEncoder.encode(owner.getPassword());
-            owner.setPassword(encryptedPassword);
-            ownerRepository.save(owner);
-        });
-        
-        return "main";
-	}
-	
 	
 	@GetMapping("/")
 	public String homePage() {
